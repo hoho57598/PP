@@ -1,0 +1,41 @@
+{
+  "intro": "디자인을 통해 사용자와 비즈니스 모두에게 가치를 전달합니다.",
+  "experience": [
+    {
+      "period": "2023 — Present",
+      "title": "Senior Designer",
+      "company": "Company Name",
+      "description": "디자인 시스템 구축 및 프로덕트 디자인 리드"
+    },
+    {
+      "period": "2021 — 2023",
+      "title": "Product Designer",
+      "company": "Company Name",
+      "description": "사용자 경험 설계 및 UI 디자인"
+    },
+    {
+      "period": "2019 — 2021",
+      "title": "Junior Designer",
+      "company": "Company Name",
+      "description": "웹/앱 UI 디자인 및 프로토타이핑"
+    }
+  ],
+  "education": [
+    {
+      "period": "2015 — 2019",
+      "title": "시각디자인학과",
+      "company": "University Name",
+      "description": "학사 졸업"
+    }
+  ],
+  "skills": [
+    { "name": "Figma", "color": "#20FFA6" },
+    { "name": "Design System", "color": "#49FFB6" },
+    { "name": "UI/UX", "color": "#5249FF" },
+    { "name": "Prototyping", "color": "#4242FF" },
+    { "name": "Visual Design", "color": "#94FF42" },
+    { "name": "User Research", "color": "#20FFA6" },
+    { "name": "Typography", "color": "#5249FF" },
+    { "name": "Motion Design", "color": "#49FFB6" }
+  ]
+}

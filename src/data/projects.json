@@ -1,0 +1,94 @@
+[
+  {
+    "slug": "design-system",
+    "title": "Design System",
+    "description": "확장 가능한 디자인 시스템 구축",
+    "gradient": "linear-gradient(135deg, #20FFA6, #5249FF)",
+    "thumbnail": "",
+    "tags": [
+      "Design System",
+      "Figma",
+      "Tokens"
+    ],
+    "year": "2024",
+    "detail": "컴포넌트 라이브러리와 디자인 토큰을 활용한 일관된 디자인 시스템을 구축했습니다. Primitive, Semantic, Component 계층 구조의 토큰 시스템을 설계하고, Light/Dark 모드를 지원합니다.",
+    "role": "Design System Lead",
+    "images": []
+  },
+  {
+    "slug": "mobile-app",
+    "title": "Mobile App",
+    "description": "사용자 중심의 모바일 앱 디자인",
+    "gradient": "linear-gradient(135deg, #4242FF, #94FF42)",
+    "thumbnail": "",
+    "tags": [
+      "Mobile",
+      "UI/UX",
+      "iOS"
+    ],
+    "year": "2024",
+    "detail": "직관적인 네비게이션과 인터랙션 패턴을 적용한 모바일 앱을 디자인했습니다. 사용자 리서치를 기반으로 핵심 플로우를 최적화하고, 프로토타이핑을 통해 검증했습니다.",
+    "role": "Product Designer",
+    "images": []
+  },
+  {
+    "slug": "brand-identity",
+    "title": "Brand Identity",
+    "description": "브랜드 아이덴티티 리뉴얼",
+    "gradient": "linear-gradient(135deg, #5249FF, #20FFA6)",
+    "thumbnail": "",
+    "tags": [
+      "Branding",
+      "Visual",
+      "Guidelines"
+    ],
+    "year": "2023",
+    "detail": "기업의 비전과 가치를 반영한 브랜드 아이덴티티를 새롭게 정의했습니다. 로고, 컬러, 타이포그래피부터 브랜드 가이드라인까지 전체 시스템을 설계했습니다.",
+    "role": "Brand Designer",
+    "images": []
+  },
+  {
+    "slug": "dashboard",
+    "title": "Dashboard",
+    "description": "데이터 시각화 대시보드",
+    "gradient": "linear-gradient(135deg, #94FF42, #4242FF)",
+    "thumbnail": "",
+    "tags": [
+      "Dashboard",
+      "Data Viz",
+      "Web"
+    ],
+    "year": "2023",
+    "detail": "복잡한 데이터를 직관적으로 이해할 수 있는 대시보드를 설계했습니다. 실시간 데이터 시각화와 커스터마이즈 가능한 위젯 시스템을 구현했습니다.",
+    "role": "UX Designer",
+    "images": []
+  },
+  {
+    "slug": "web-service",
+    "title": "Web Service",
+    "description": "웹 서비스 전체 리디자인",
+    "gradient": "linear-gradient(135deg, #49FFB6, #5249FF)",
+    "thumbnail": "",
+    "tags": [
+      "Web",
+      "Redesign",
+      "UX"
+    ],
+    "year": "2023",
+    "detail": "레거시 웹 서비스의 사용성을 개선하고 현대적인 디자인으로 리뉴얼했습니다. 사용자 피드백을 분석하여 핵심 플로우를 재설계했습니다.",
+    "role": "Lead Designer",
+    "images": []
+  },
+  {
+    "slug": "123",
+    "title": "123",
+    "description": "123",
+    "gradient": "linear-gradient(135deg, #20FFA6, #5249FF)",
+    "thumbnail": "",
+    "tags": [],
+    "year": "2026",
+    "detail": "123",
+    "role": "123",
+    "images": []
+  }
+]
