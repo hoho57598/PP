@@ -44,12 +44,14 @@ function FloatingTileItem({
   textColor: string;
   textOpacity: number;
   onDragStart: () => void;
-  onDragEnd: (rect: DOMRect | null) => void;
+  onDragEnd: (
+    rect: DOMRect | null,
+    point: { x: number; y: number }
+  ) => void;
 }) {
   const [grabbed, setGrabbed] = useState(false);
   const localRef = useRef<HTMLDivElement>(null);
 
-  // Combine refs (parent ref + local ref)
   const setRefs = (el: HTMLDivElement | null) => {
     localRef.current = el;
     if (typeof tileRef === "function") tileRef(el);
@@ -68,9 +70,9 @@ function FloatingTileItem({
         setGrabbed(true);
         onDragStart();
       }}
-      onDragEnd={() => {
+      onDragEnd={(_e, info) => {
         const rect = localRef.current?.getBoundingClientRect() ?? null;
-        onDragEnd(rect);
+        onDragEnd(rect, info.point);
       }}
       initial={{ opacity: 0, scale: 0.5 }}
       animate={
@@ -306,37 +308,55 @@ export default function PuzzleIntro() {
     }
   }
 
-  function handleDragEnd(isCorrect: boolean, tileRect: DOMRect | null) {
+  function handleDragEnd(
+    isCorrect: boolean,
+    tileRect: DOMRect | null,
+    point: { x: number; y: number }
+  ) {
     const slot = slotRef.current;
-    console.log("[Puzzle] dragEnd", { isCorrect, hasTile: !!tileRect, hasSlot: !!slot });
     if (!slot) return;
-    if (!tileRect) {
-      console.warn("[Puzzle] tileRect is null — falling back to success if correct");
-      // Fallback: just trust isCorrect when rect missing
-      if (isCorrect) triggerSuccess();
-      return;
-    }
     const r = slot.getBoundingClientRect();
+    const slotCx = r.left + r.width / 2;
+    const slotCy = r.top + r.height / 2;
 
-    const padding = 60;
-    const overlap =
-      tileRect.right >= r.left - padding &&
-      tileRect.left <= r.right + padding &&
-      tileRect.bottom >= r.top - padding &&
-      tileRect.top <= r.bottom + padding;
+    // Three independent checks — if ANY passes, treat as inside the slot.
+    // This makes the drop very forgiving regardless of how the user grabs.
 
-    console.log("[Puzzle] overlap?", overlap, { tileRect, slotRect: r });
+    // 1) Mouse pointer landed near the slot
+    const pointDist = Math.hypot(point.x - slotCx, point.y - slotCy);
+    const pointHit = pointDist <= 200;
 
-    if (overlap && isCorrect) {
+    // 2) Tile rect overlaps slot rect (with padding)
+    let rectHit = false;
+    if (tileRect) {
+      const padding = 80;
+      rectHit =
+        tileRect.right >= r.left - padding &&
+        tileRect.left <= r.right + padding &&
+        tileRect.bottom >= r.top - padding &&
+        tileRect.top <= r.bottom + padding;
+    }
+
+    // 3) Tile center within distance threshold
+    let centerHit = false;
+    if (tileRect) {
+      const tCx = tileRect.left + tileRect.width / 2;
+      const tCy = tileRect.top + tileRect.height / 2;
+      const centerDist = Math.hypot(tCx - slotCx, tCy - slotCy);
+      centerHit = centerDist <= 200;
+    }
+
+    const inSlot = pointHit || rectHit || centerHit;
+
+    if (inSlot && isCorrect) {
       triggerSuccess();
-    } else if (overlap && !isCorrect) {
+    } else if (inSlot && !isCorrect) {
       setWrong(true);
       setTimeout(() => setWrong(false), 500);
     }
   }
 
   function triggerSuccess() {
-    console.log("[Puzzle] SUCCESS!");
     setSolved(true);
     fireConfetti();
     setTimeout(() => {
@@ -546,8 +566,8 @@ export default function PuzzleIntro() {
                     textColor={textColor}
                     textOpacity={textOpacity}
                     onDragStart={() => setDragged(true)}
-                    onDragEnd={(rect) => {
-                      handleDragEnd(tile.isCorrect, rect);
+                    onDragEnd={(rect, point) => {
+                      handleDragEnd(tile.isCorrect, rect, point);
                     }}
                   />
                 );
