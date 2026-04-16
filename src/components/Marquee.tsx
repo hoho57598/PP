@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion";
 
 const items = [
   "Designer",
@@ -20,10 +19,8 @@ export default function Marquee() {
         borderBottom: "1px solid var(--border)",
       }}
     >
-      <motion.div
-        className="flex whitespace-nowrap"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 25, ease: "linear", repeat: Infinity }}
+      <div
+        className="flex whitespace-nowrap animate-marquee"
       >
         {row.map((item, i) => (
           <span
@@ -35,7 +32,7 @@ export default function Marquee() {
             <span className="text-mint text-lg">&#x2666;</span>
           </span>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }

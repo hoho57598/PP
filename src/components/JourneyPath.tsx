@@ -42,14 +42,14 @@ const milestones = [
 
 export default function JourneyPath() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-200px" });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end center"],
   });
 
-  const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  // Transform scroll progress to scaleY for the progress line
+  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <section ref={sectionRef} className="py-32 px-6 overflow-hidden">
@@ -70,50 +70,20 @@ export default function JourneyPath() {
         </motion.div>
 
         <div className="relative">
-          {/* SVG Path line */}
-          <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-px">
-            <svg
-              className="w-[2px] h-full"
-              viewBox="0 0 2 100"
-              preserveAspectRatio="none"
-              style={{ overflow: "visible" }}
-            >
-              {/* Background line */}
-              <line
-                x1="1"
-                y1="0"
-                x2="1"
-                y2="100"
-                stroke="var(--border)"
-                strokeWidth="2"
-                vectorEffect="non-scaling-stroke"
-              />
-              {/* Animated progress line */}
-              <motion.line
-                x1="1"
-                y1="0"
-                x2="1"
-                y2="100"
-                stroke="url(#journeyGrad)"
-                strokeWidth="2"
-                vectorEffect="non-scaling-stroke"
-                style={{ pathLength }}
-              />
-              <defs>
-                <linearGradient
-                  id="journeyGrad"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop offset="0%" stopColor="#94FF42" />
-                  <stop offset="50%" stopColor="#20FFA6" />
-                  <stop offset="100%" stopColor="#5249FF" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
+          {/* Background line */}
+          <div
+            className="absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2"
+            style={{ background: "var(--border)" }}
+          />
+
+          {/* Scroll-linked progress line */}
+          <motion.div
+            className="absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 origin-top"
+            style={{
+              scaleY,
+              background: "linear-gradient(to bottom, #94FF42, #20FFA6, #5249FF)",
+            }}
+          />
 
           {/* Milestones */}
           <div className="relative space-y-20">
@@ -147,20 +117,16 @@ export default function JourneyPath() {
                   </div>
 
                   {/* Center dot */}
-                  <motion.div
+                  <div
                     className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center text-xl flex-shrink-0"
                     style={{
                       background: "var(--background)",
                       border: `2px solid ${m.color}`,
                       boxShadow: `0 0 20px ${m.color}30`,
                     }}
-                    whileInView={{
-                      boxShadow: `0 0 30px ${m.color}50`,
-                    }}
-                    viewport={{ once: true }}
                   >
                     {m.icon}
-                  </motion.div>
+                  </div>
 
                   {/* Empty space for the other side */}
                   <div className="flex-1" />
@@ -168,14 +134,6 @@ export default function JourneyPath() {
               );
             })}
           </div>
-
-          {/* Summit glow */}
-          <motion.div
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full blur-[60px]"
-            style={{ background: "#20FFA6", opacity: 0 }}
-            animate={isInView ? { opacity: 0.15 } : {}}
-            transition={{ duration: 1, delay: 0.5 }}
-          />
         </div>
       </div>
     </section>

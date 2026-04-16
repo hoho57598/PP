@@ -60,10 +60,10 @@ export default function FloatingCards() {
   const [cards, setCards] = useState<Card[]>([]);
 
   useEffect(() => {
-    // Mobile: fewer cards for performance
+    // Mobile: hide completely for performance
     const isMobile = window.innerWidth < 768;
-    const all = generateCards();
-    setCards(isMobile ? all.slice(0, 4) : all);
+    if (isMobile) return;
+    setCards(generateCards());
   }, []);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
