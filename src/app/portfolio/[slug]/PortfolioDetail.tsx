@@ -57,6 +57,16 @@ export default function PortfolioDetail({
             &larr; Back to Work
           </Link>
 
+          {/* Demo button */}
+          {project.demoUrl && (
+            <a
+              href={project.demoUrl}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-mint text-black font-medium rounded-full hover:bg-mint-light transition-colors text-sm mb-12"
+            >
+              🚀 인터랙티브 데모 체험하기
+            </a>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             <div>
               <p

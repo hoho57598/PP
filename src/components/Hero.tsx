@@ -39,11 +39,10 @@ export default function Hero() {
       {/* Floating project cards */}
       <FloatingCards />
 
-      {/* Background glow */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Background glow — hidden on mobile for performance */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
         <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full blur-[128px] opacity-20 bg-mint" />
         <div className="absolute bottom-1/4 -right-32 w-96 h-96 rounded-full blur-[128px] opacity-15 bg-purple" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[200px] opacity-5 bg-lime" />
       </div>
 
       <div className="relative z-10 text-center max-w-4xl">

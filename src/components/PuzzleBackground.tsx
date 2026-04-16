@@ -17,7 +17,9 @@ export default function PuzzleBackground() {
   const [stars, setStars] = useState<Star[]>([]);
 
   useEffect(() => {
-    const generated: Star[] = Array.from({ length: 60 }, () => ({
+    const isMobile = window.innerWidth < 768;
+    const count = isMobile ? 20 : 60;
+    const generated: Star[] = Array.from({ length: count }, () => ({
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: Math.random() * 3 + 1,
@@ -43,34 +45,14 @@ export default function PuzzleBackground() {
         }}
       />
 
-      {/* Radial glow blobs */}
-      <motion.div
-        className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full blur-[120px]"
+      {/* Radial glow blobs — static on mobile, animated on desktop */}
+      <div
+        className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full blur-[120px] opacity-10"
         style={{ background: "#20FFA6" }}
-        animate={{ opacity: [0.08, 0.15, 0.08], scale: [1, 1.1, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div
-        className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full blur-[140px]"
+      <div
+        className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-10"
         style={{ background: "#5249FF" }}
-        animate={{ opacity: [0.1, 0.18, 0.1], scale: [1, 1.15, 1] }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 2,
-        }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full blur-[120px]"
-        style={{ background: "#94FF42" }}
-        animate={{ opacity: [0.04, 0.08, 0.04] }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1,
-        }}
       />
 
       {/* Twinkling stars */}
@@ -99,9 +81,9 @@ export default function PuzzleBackground() {
         />
       ))}
 
-      {/* Diagonal sweep light */}
+      {/* Diagonal sweep light — desktop only */}
       <motion.div
-        className="absolute inset-0"
+        className="absolute inset-0 hidden md:block"
         style={{
           background:
             "linear-gradient(115deg, transparent 40%, rgba(32,255,166,0.04) 50%, transparent 60%)",

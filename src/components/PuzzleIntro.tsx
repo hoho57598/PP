@@ -48,6 +48,8 @@ function FloatingTileItem({
     rect: DOMRect | null,
     point: { x: number; y: number }
   ) => void;
+  onTapSuccess?: () => void;
+  isMobile?: boolean;
 }) {
   const [grabbed, setGrabbed] = useState(false);
   const localRef = useRef<HTMLDivElement>(null);
@@ -73,6 +75,11 @@ function FloatingTileItem({
       onDragEnd={(_e, info) => {
         const rect = localRef.current?.getBoundingClientRect() ?? null;
         onDragEnd(rect, info.point);
+      }}
+      onTap={() => {
+        if (isMobile && tile.isCorrect && onTapSuccess) {
+          onTapSuccess();
+        }
       }}
       initial={{ opacity: 0, scale: 0.5 }}
       animate={
@@ -181,6 +188,7 @@ export default function PuzzleIntro() {
   const [dragged, setDragged] = useState(false);
   const [wrong, setWrong] = useState(false);
   const [missingIndex, setMissingIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const [ghostPos, setGhostPos] = useState<{
     startX: number;
     startY: number;
@@ -203,8 +211,8 @@ export default function PuzzleIntro() {
       .slice(0, 2);
     const decoyColors = ["#FF6B6B", "#FFB84D"];
 
-    // Reserve top area for ROCKET title + slots
     const safeTop = 200;
+    const mobile = typeof window !== "undefined" && (window.innerWidth < 768 || "ontouchstart" in window);
 
     const all: FloatingTile[] = [
       {
@@ -215,10 +223,11 @@ export default function PuzzleIntro() {
           const p = makeDriftPath(safeTop);
           return { xPath: p.x, yPath: p.y, rPath: p.r };
         })(),
-        duration: rand(35, 45),
+        duration: mobile ? rand(50, 70) : rand(35, 45),
         delay: 1,
       },
-      ...decoyChars.map((c, i) => {
+      // Mobile: only 1 decoy, Desktop: 2 decoys
+      ...decoyChars.slice(0, mobile ? 1 : 2).map((c, i) => {
         const p = makeDriftPath(safeTop);
         return {
           char: c,
@@ -227,7 +236,7 @@ export default function PuzzleIntro() {
           xPath: p.x,
           yPath: p.y,
           rPath: p.r,
-          duration: rand(30, 50),
+          duration: mobile ? rand(40, 60) : rand(30, 50),
           delay: 1 + i * 0.3,
         };
       }),
@@ -259,6 +268,7 @@ export default function PuzzleIntro() {
       return;
     }
     setMissingIndex(Math.floor(Math.random() * WORD.length));
+    setIsMobile(window.innerWidth < 768 || "ontouchstart" in window);
     document.body.style.overflow = "hidden";
     setReady(true);
   }, []);
@@ -569,6 +579,8 @@ export default function PuzzleIntro() {
                     onDragEnd={(rect, point) => {
                       handleDragEnd(tile.isCorrect, rect, point);
                     }}
+                    onTapSuccess={triggerSuccess}
+                    isMobile={isMobile}
                   />
                 );
               })}
@@ -584,7 +596,7 @@ export default function PuzzleIntro() {
             transition={{ duration: 0.3, delay: solved ? 0 : 1.2 }}
             className="mb-12 text-xs text-white select-none pointer-events-none tracking-wider relative z-10"
           >
-            떠다니는 글자를 드래그해서 빈칸에 넣어보세요
+            {isMobile ? "정답 글자를 탭하세요" : "떠다니는 글자를 드래그해서 빈칸에 넣어보세요"}
           </motion.p>
 
           {/* Success overlay - blurs the whole stage */}
