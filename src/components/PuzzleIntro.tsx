@@ -367,25 +367,33 @@ export default function PuzzleIntro() {
   }
 
   function triggerSuccess() {
+    if (solved) return; // prevent double calls
     setSolved(true);
+    sessionStorage.setItem("puzzle_done", "1");
     fireConfetti();
     setTimeout(() => {
-      setDismissed(true);
-      sessionStorage.setItem("puzzle_done", "1");
       document.body.style.overflow = "";
+      setDismissed(true);
     }, 2500);
+    // Fallback: force dismiss after 3.5s no matter what
+    setTimeout(() => {
+      document.body.style.overflow = "";
+      setDismissed(true);
+    }, 3500);
   }
 
   function skipPuzzle() {
-    setDismissed(true);
     sessionStorage.setItem("puzzle_done", "1");
     document.body.style.overflow = "";
+    setDismissed(true);
   }
 
   if (dismissed) return null;
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={() => {
+      document.body.style.overflow = "";
+    }}>
       {!dismissed && (
         <motion.div
           key="puzzle"
