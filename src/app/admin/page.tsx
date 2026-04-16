@@ -12,6 +12,7 @@ interface Project {
   detail: string;
   role: string;
   images: string[];
+  figmaUrl?: string;
 }
 
 interface ResumeEntry {
@@ -47,6 +48,7 @@ const emptyProject: Project = {
   detail: "",
   role: "",
   images: [],
+  figmaUrl: "",
 };
 
 export default function AdminPage() {
@@ -469,6 +471,30 @@ export default function AdminPage() {
                       style={{ background: editing.gradient }}
                     />
                   </div>
+                </div>
+
+                {/* Figma URL */}
+                <div>
+                  <label className={label} style={labelStyle}>
+                    Figma URL <span style={{ opacity: 0.6 }}>(선택)</span>
+                  </label>
+                  <input
+                    className={input}
+                    style={inputStyle}
+                    value={editing.figmaUrl ?? ""}
+                    onChange={(e) =>
+                      setEditing({ ...editing, figmaUrl: e.target.value })
+                    }
+                    placeholder="https://www.figma.com/design/..."
+                  />
+                  {editing.figmaUrl && (
+                    <p
+                      className="text-xs mt-1.5"
+                      style={{ color: "var(--muted)" }}
+                    >
+                      ✓ 프로젝트 상세 페이지에 임베드 표시됨
+                    </p>
+                  )}
                 </div>
 
                 {/* Thumbnail */}

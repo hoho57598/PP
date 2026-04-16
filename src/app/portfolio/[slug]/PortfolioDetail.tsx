@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Project } from "@/lib/data";
 import Lightbox from "@/components/Lightbox";
+import FigmaEmbed from "@/components/FigmaEmbed";
 
 export default function PortfolioDetail({
   project,
@@ -43,7 +44,7 @@ export default function PortfolioDetail({
       </motion.div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 py-20">
+      <div className="max-w-5xl mx-auto px-6 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -106,13 +107,20 @@ export default function PortfolioDetail({
             {project.detail}
           </p>
 
-          {/* Project images with lightbox */}
+          {/* Figma embed if URL is provided */}
+          {project.figmaUrl && (
+            <div className="mb-16">
+              <FigmaEmbed url={project.figmaUrl} title={project.title} />
+            </div>
+          )}
+
+          {/* Project images — full width vertical scroll */}
           {project.images.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-4">
               {project.images.map((url, i) => (
                 <div
                   key={i}
-                  className="rounded-xl overflow-hidden cursor-grow transition-transform hover:scale-[1.02]"
+                  className="w-full rounded-xl overflow-hidden cursor-grow"
                   style={{ border: "1px solid var(--border)" }}
                   onClick={() => setLightboxIdx(i)}
                 >

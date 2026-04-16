@@ -12,6 +12,7 @@ export interface Project {
   detail: string;
   role: string;
   images: string[];
+  figmaUrl?: string;
 }
 
 export interface ResumeEntry {
