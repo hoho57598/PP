@@ -390,6 +390,64 @@ export default function PuzzleIntro() {
 
   if (dismissed) return null;
 
+  // Mobile: simple tap-to-enter instead of drag puzzle
+  if (isMobile) {
+    return (
+      <motion.div
+        key="mobile-intro"
+        className="fixed inset-0 z-[9997] flex flex-col items-center justify-center"
+        style={{ background: "#0A0A0A" }}
+        exit={{ opacity: 0 }}
+      >
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.12 }}
+          className="font-heading text-5xl font-bold text-white select-none mb-6"
+        >
+          ROCKET
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="flex gap-3 mb-8"
+        >
+          {WORD.split("").map((char, i) => (
+            <div
+              key={i}
+              className="w-12 h-12 rounded-xl flex items-center justify-center"
+              style={{
+                border: `2px solid ${TILE_COLORS[i]}40`,
+                background: `${TILE_COLORS[i]}08`,
+              }}
+            >
+              <span className="font-heading text-lg font-bold text-white" style={{ textShadow: `0 0 12px ${TILE_COLORS[i]}80` }}>
+                {char}
+              </span>
+            </div>
+          ))}
+        </motion.div>
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          onClick={() => {
+            fireConfetti();
+            sessionStorage.setItem("puzzle_done", "1");
+            setTimeout(() => {
+              document.body.style.overflow = "";
+              setDismissed(true);
+            }, 800);
+          }}
+          className="px-8 py-3 rounded-full font-medium text-sm text-black cursor-pointer"
+          style={{ background: "#20FFA6" }}
+        >
+          포트폴리오 입장하기 🚀
+        </motion.button>
+      </motion.div>
+    );
+  }
+
   return (
     <AnimatePresence onExitComplete={() => {
       document.body.style.overflow = "";
